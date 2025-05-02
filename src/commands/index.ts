@@ -18,12 +18,12 @@ type Command = {
 
 const commandSchema: Command = {
   "init": async () => init(),
-  "add": () => add(),
-  "rm": () => rm(),
-  "publish": () => publish(),
-  "draft": () => draft(),
-  "version": () => version(),
-  "help": () => help()
+  "add": async () => add(),
+  "rm": async () => rm(),
+  "publish": async () => publish(),
+  "draft": async () => draft(),
+  "version": async () => version(),
+  "help": async () => help()
 }
 
 const isCommand = (command: string): command is keyof Command => {
