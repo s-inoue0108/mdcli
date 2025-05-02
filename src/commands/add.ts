@@ -1,5 +1,5 @@
 
 
-export const exec = async () => {
-  console.log("add")
+export const exec = async (args?: string[]) => {
+  console.log(`add ${args}`)
 }
