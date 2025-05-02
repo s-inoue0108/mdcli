@@ -1,0 +1,14 @@
+{
+  "name": "@s-inoue0108/mdcli",
+  "version": "0.1.0",
+  "description": "Command line tool for management Markdown (.md) file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Shota Inoue",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^5.8.3"
+  }
+}
