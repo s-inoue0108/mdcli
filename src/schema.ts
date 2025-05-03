@@ -1,61 +1,13 @@
-import { exec as init } from "./commands/init"
-import { exec as add } from "./commands/add"
-import { exec as remove } from "./commands/remove"
-import { exec as publish } from "./commands/publish"
-import { exec as draft } from "./commands/draft"
-import { exec as list } from "./commands/list"
-import { exec as convert } from "./commands/convert"
-import { exec as version } from "./commands/version"
-import { exec as help } from "./commands/help"
-
-// Markdown のファイル名
-// type MdName = `${string}.md` | `${string}.markdown` | `${string}.mdx`
-
-// 許される引数の型
-// export type Args = {
-//   init: undefined;
-//   add: {
-//     mdName: MdName;
-//     options?: {
-//       uuid: boolean;
-//     };
-//   };
-//   remove: {
-//     mdName: MdName;
-//     options?: {
-//       force: boolean;
-//     };
-//   };
-//   publish: {
-//     mdName: MdName;
-//     options?: {
-//       "ignore-timestamp": boolean;
-//     };
-//   };
-//   draft: {
-//     mdName: MdName;
-//     options?: {
-//       "ignore-timestamp": boolean;
-//     };
-//   };
-//   list: {
-//     options?: {
-//       published: boolean;
-//       draft: boolean;
-//       sort: boolean;
-//       detail: MdName;
-//     };
-//   };
-//   convert: {
-//     mdName: MdName;
-//     options?: {
-//       force: boolean;
-//       type: "zenn" | "github";
-//     };
-//   };
-//   version: undefined;
-//   help: undefined;
-// };
+import { exec as init } from "./commands/init.js"
+import { exec as add } from "./commands/add.js"
+import { exec as remove } from "./commands/remove.js"
+import { exec as publish } from "./commands/publish.js"
+import { exec as draft } from "./commands/draft.js"
+import { exec as list } from "./commands/list.js"
+import { exec as convert } from "./commands/convert.js"
+import { exec as version } from "./commands/version.js"
+import { exec as help } from "./commands/help.js"
+import chalk from "chalk"
 
 // 許されるコマンド
 export const commandSchema = {
@@ -74,39 +26,28 @@ export type Command = typeof commandSchema
 
 // 許されるコマンドエイリアス
 const commandAlias = {
-  init: [],
-  add: ["create", "new", "generate", "gen"],
-  remove: ["rm", "delete", "del"],
-  publish: ["pb", "pub", "release"],
-  draft: ["df", "dft"],
+  init: ["setup"],
+  add: ["create", "new", "generate"],
+  remove: ["rm", "delete"],
+  publish: ["pub", "release"],
+  draft: ["dft", "revoke"],
   list: ["ls", "display"],
   convert: ["conv"],
-  version: [],
-  help: []
-} as const;
-
-type CommandAlias = typeof commandAlias
+  version: [] as string[],
+  help: [] as string[]
+};
 
 // コマンドエイリアスの解決
-const aliasToCommand: Record<string, keyof CommandAlias> = {};
-
-for (const command in commandAlias) {
-  const aliases = commandAlias[command as keyof CommandAlias];
-  for (const alias of aliases) {
-    aliasToCommand[alias] = command as keyof CommandAlias;
+export const resolveCommand = (input: string): keyof Command => {
+  for (const [command, aliases] of Object.entries(commandAlias)) {
+    aliases.push(command)
+    if (aliases.includes(input)) {
+      return command as keyof Command
+    }
   }
-}
-
-const resolveCommandAlias = (input: string): keyof CommandAlias | undefined => {
-  if (commandAlias[input as keyof CommandAlias]) {
-    return input as keyof CommandAlias;
-  }
-  return aliasToCommand[input];
-}
-
-// 型ガード
-export const isCommand = (command: string): command is keyof Command => {
-  const resolvedCommand = resolveCommandAlias(command)
-  if (!resolvedCommand) return false
-  return resolvedCommand in commandSchema
+  console.error(
+    `😵 ${chalk.red("Invalid Command:")} ${chalk.underline(input)}\n` +
+    `💡 Run ${chalk.green("mdcli help")} for usage.`
+  )
+  process.exit(1)
 }

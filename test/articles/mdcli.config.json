@@ -3,7 +3,7 @@
   "root": "D:\\Astro\\mdcli\\",
   "repo": "test/articles",
   "frontmatter": {
-    "type": "json",
+    "type": "yaml",
     "field": {}
   }
 }

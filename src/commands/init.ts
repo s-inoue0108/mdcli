@@ -2,55 +2,37 @@
 
 import path from 'path';
 import fs from 'fs';
-import { packageUp } from 'package-up';
-import { input, select, Separator } from '@inquirer/prompts';
+import { input, select } from '@inquirer/prompts';
+import chalk from 'chalk';
+import { type MdcliConfig } from '../lib/type.js';
+import { getPackageJsonPath } from '../lib/utility.js';
 
 const processor = async (defaults?: MdcliConfig) => {
+
   const config = await interactiveUI(defaults)
 
   const concatPath = path.join(config.root, config.repo)
 
   fs.writeFileSync(path.join(concatPath, "mdcli.config.json"), JSON.stringify(config, null, 2))
-  console.log(`Initialize Success!\nGenerated 'mdcli.config.json' in ${concatPath}.`)
+
+  console.log(chalk.green("🤩Initialize Success!"))
+  console.log(`🔚Generated ${chalk.green("mdcli.config.json")} in ${chalk.underline(concatPath)}.`)
 }
-
-
-
-const getPackageJsonPath = async () => {
-  const pkgPath = await packageUp({ cwd: process.cwd() });
-  if (!pkgPath) {
-    throw new Error("package.json not found.")
-  }
-  return path.join(pkgPath, "../")
-}
-
-type MdcliConfig = {
-  author: string
-  root: string
-  repo: string
-  frontmatter: {
-    type: string
-    field: {
-      [key: string]: string | string[] | boolean
-    }
-  }
-}
-
 
 
 const interactiveUI = async (defaults?: MdcliConfig): Promise<MdcliConfig> => {
   const author = await input({
-    message: "Author Name\n>>",
+    message: "Author Name >",
     default: defaults ? defaults.author ?? "Anonymous" : "Anonymous"
   });
 
-  const repo = await input({
-    message: `Path to Markdown Repository (Now in ${process.cwd()})\n>>`,
-    default: defaults ? defaults.repo ?? "./" : "./",
+  const repo = (defaults && defaults.repo) ? defaults.repo : await input({
+    message: `Path to Markdown Repository (Now in ${process.cwd()})\n>`,
+    default: "./",
     validate: (val) => {
       const dirPath = path.join(process.cwd(), val);
       if (!fs.existsSync(dirPath) || !fs.statSync(dirPath).isDirectory()) {
-        return "Path is invalid!";
+        return chalk.red("😵Invalid Path: ") + chalk.underline(val);
       }
       return true
     }
@@ -58,14 +40,12 @@ const interactiveUI = async (defaults?: MdcliConfig): Promise<MdcliConfig> => {
 
   const frontmatter = defaults ? defaults.frontmatter ?? {
     type: "yaml",
-    field: {}
   } : {
     type: "yaml",
-    field: {}
   }
 
   frontmatter.type = await select({
-    message: "Select Frontmatter Type",
+    message: "Select Frontmatter Type >",
     choices: [
       { name: "yaml", value: "yaml" },
       { name: "toml", value: "toml" },
@@ -100,7 +80,7 @@ export const exec = async () => {
   // 既に mdcli.config.json がある場合
   if (pkg.mdcli && pkg.mdcli.config) {
 
-    console.log(`'mdcli.config.json' already exists.`)
+    console.log(`🤔${chalk.yellow(chalk.underline("mdcli.config.json") + " is already exists!")}`)
 
     const isUpdate = await select({
       message: "Update Configration?",

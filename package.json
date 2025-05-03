@@ -1,6 +1,6 @@
 {
   "name": "@s-inoue0108/mdcli",
-  "version": "0.1.11-alpha",
+  "version": "0.1.19-alpha",
   "description": "Command line tool for management Markdown (.md) file.",
   "main": "dist/mdcli.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "prepare": "npm run build",
     "test": "test"
   },
+  "type": "module",
   "author": "Shota Inoue",
   "license": "MIT",
   "bin": {
@@ -21,14 +22,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/s-inoue0108/mdcli.git"
+    "url": "git+https://github.com/s-inoue0108/mdcli.git"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.5.0",
+    "chalk": "^5.4.1",
+    "package-up": "^5.0.0"
   },
   "devDependencies": {
-    "@inquirer/prompts": "^7.5.0",
     "@types/node": "^22.15.3",
-    "chalk": "^5.4.1",
-    "ora": "^8.2.0",
-    "package-up": "^5.0.0",
+    "textlint": "^14.7.1",
+    "textlint-rule-no-todo": "^2.0.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
