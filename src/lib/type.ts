@@ -60,5 +60,6 @@ export type MdcliConfig = {
   repo: string
   frontmatter: {
     type: string
+    tags: string[]
   }
 }

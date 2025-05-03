@@ -5,6 +5,7 @@ import { exec as publish } from "./commands/publish.js"
 import { exec as draft } from "./commands/draft.js"
 import { exec as list } from "./commands/list.js"
 import { exec as convert } from "./commands/convert.js"
+import { exec as tag } from "./commands/tag.js"
 import { exec as version } from "./commands/version.js"
 import { exec as help } from "./commands/help.js"
 import chalk from "chalk"
@@ -18,6 +19,7 @@ export const commandSchema = {
   draft: async (args: string[]) => draft(args),
   list: async (args: string[]) => list(args),
   convert: async (args: string[]) => convert(args),
+  tag: async (args: string[]) => tag(args),
   version: async () => version(),
   help: async () => help()
 } as const
@@ -33,6 +35,7 @@ const commandAlias = {
   draft: ["dft", "revoke"],
   list: ["ls", "display"],
   convert: ["conv"],
+  tag: [] as string[],
   version: [] as string[],
   help: [] as string[]
 };

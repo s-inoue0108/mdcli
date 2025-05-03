@@ -2,7 +2,7 @@
 
 import path from 'path';
 import fs from 'fs';
-import { input, select } from '@inquirer/prompts';
+import { input, select, confirm } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { type MdcliConfig } from '../lib/type.js';
 import { getPackageJsonPath } from '../lib/utility.js';
@@ -40,8 +40,10 @@ const interactiveUI = async (defaults?: MdcliConfig): Promise<MdcliConfig> => {
 
   const frontmatter = defaults ? defaults.frontmatter ?? {
     type: "yaml",
+    tags: []
   } : {
     type: "yaml",
+    tags: []
   }
 
   frontmatter.type = await select({
@@ -53,6 +55,14 @@ const interactiveUI = async (defaults?: MdcliConfig): Promise<MdcliConfig> => {
     ],
     default: defaults && defaults.frontmatter ? defaults.frontmatter.type ?? "yaml" : "yaml"
   });
+
+  if (frontmatter.tags && frontmatter.tags.length === 0) {
+    const tags = await input({
+      message: "Add Content Tags (delimited by space)\n>",
+    })
+
+    frontmatter.tags = tags.split(" ")
+  }
 
   // package.json の mdcli フィールドを追記
   const pkgPath = await getPackageJsonPath()
@@ -82,12 +92,8 @@ export const exec = async () => {
 
     console.log(`🤔${chalk.yellow(chalk.underline("mdcli.config.json") + " is already exists!")}`)
 
-    const isUpdate = await select({
-      message: "Update Configration?",
-      choices: [
-        { name: "Yes", value: true },
-        { name: "No", value: false },
-      ],
+    const isUpdate = await confirm({
+      message: "Update it?",
       default: false
     })
 
