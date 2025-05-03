@@ -49,8 +49,8 @@ export const resolveCommand = (input: string): keyof Command => {
     }
   }
   console.error(
-    `😵 ${chalk.red("Invalid Command:")} ${chalk.underline(input)}\n` +
-    `💡 Run ${chalk.green("mdcli help")} for usage.`
+    `😵${chalk.red("Invalid Command:")} ${chalk.underline(input)}\n` +
+    `💡Run ${chalk.green("mdcli help")} for usage.`
   )
   process.exit(1)
 }
