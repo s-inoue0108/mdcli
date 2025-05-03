@@ -1,15 +1,21 @@
 #!/usr/bin/env node
 
-import arg from "arg"
-import { exec } from "./commands"
+import { commandSchema, isCommand } from "./schema"
 
-const args = arg(
-  {},
-  {
-    permissive: true,
+// main 関数
+(async () => {
+  const command = process.argv[2]
+  const args = process.argv.slice(3)
+
+  // Exit if captured invalid command
+  if (!isCommand(command)) {
+    console.error(
+      `Invalid command: ${command}\n` +
+      `Run 'mdcli help' for usage.`
+    )
+    process.exit(1)
   }
-);
 
-const command = args._[0] ?? "help"
-
-exec(command, args._.slice(1))
+  const exec = commandSchema[command]
+  exec(args)
+})()

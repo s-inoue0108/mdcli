@@ -1,0 +1,9 @@
+{
+  "author": "Shota Inoue",
+  "root": "D:\\Astro\\mdcli\\",
+  "repo": "test/articles",
+  "frontmatter": {
+    "type": "json",
+    "field": {}
+  }
+}

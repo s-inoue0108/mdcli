@@ -1,5 +1,6 @@
+#!/usr/bin/env node
 
 
-export const exec = async () => {
+export const exec = async (args: string[]) => {
   console.log("publish")
 }

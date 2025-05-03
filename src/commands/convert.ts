@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+
 export const exec = async (args: string[]) => {
-  console.log("draft")
+  console.log("convert")
 }
