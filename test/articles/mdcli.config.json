@@ -5,10 +5,9 @@
   "frontmatter": {
     "type": "yaml",
     "tags": [
-      "md",
       "js",
       "ts",
-      "programming"
+      "md"
     ]
   }
 }

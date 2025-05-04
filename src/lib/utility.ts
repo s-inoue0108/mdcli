@@ -23,6 +23,13 @@ export const getMdcliConfig = async () => {
   return config
 }
 
+// mdcli.config.json を更新
+export const updateMdcliConfig = async (newConfig: MdcliConfig) => {
+  const pkgPath = await getPackageJsonPath()
+  const pkg = JSON.parse(fs.readFileSync(`${pkgPath}/package.json`, "utf-8"))
+  fs.writeFileSync(pkg.mdcli.config, JSON.stringify(newConfig, null, 2))
+}
+
 // リポジトリのある階層を取得
 export const getRepo = async () => {
   const config = await getMdcliConfig()

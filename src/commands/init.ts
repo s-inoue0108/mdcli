@@ -59,6 +59,17 @@ const interactiveUI = async (defaults?: MdcliConfig): Promise<MdcliConfig> => {
   if (frontmatter.tags && frontmatter.tags.length === 0) {
     const tags = await input({
       message: "Add Content Tags (delimited by space)\n>",
+      validate: ((val) => {
+        const validTags = val.split(" ")
+        if (validTags.length === 1 && validTags[0] === "") {
+          return chalk.red("😵Invalid Empty Input!")
+        }
+
+        if (Array.from(new Set(validTags)).length !== validTags.length) {
+          return chalk.red("😵Invalid Duplicate Tags!")
+        }
+        return true
+      })
     })
 
     frontmatter.tags = tags.split(" ")

@@ -1,8 +1,8 @@
 ---
 title: test
 author: Shota Inoue
-createdAt: 2025-05-03T15:31:53.641Z
-updatedAt: 2025-05-03T15:31:53.641Z
-tags: ["md","ts"]
+createdAt: 2025-05-04T01:55:50.870Z
+updatedAt: 2025-05-04T01:55:50.870Z
+tags: ["md","programming"]
 published: false
 ---
